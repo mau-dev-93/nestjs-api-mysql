@@ -6,7 +6,11 @@ import AppDataSource from '../datasource';
 import { ClientModule } from './modules/client/client.module';
 
 @Module({
-	imports: [TypeOrmModule.forRoot(AppDataSource.options as DataSourceOptions), ProductModule, ClientModule],
+	imports: [
+		TypeOrmModule.forRoot(AppDataSource.options as DataSourceOptions),
+		ProductModule,
+		ClientModule,
+	],
 	controllers: [],
 	providers: [],
 })

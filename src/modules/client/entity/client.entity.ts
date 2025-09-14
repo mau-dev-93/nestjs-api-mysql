@@ -12,7 +12,7 @@ export class Client {
 	@Column({ type: String, nullable: false, unique: true, length: 30 })
 	email!: string;
 
-	@OneToOne(() => Address)
+	@OneToOne(() => Address, { cascade: ['insert', 'update', 'remove'], eager: true })
 	@JoinColumn()
 	address: Address;
 }

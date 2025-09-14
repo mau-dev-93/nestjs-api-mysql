@@ -8,7 +8,10 @@ import { StockModel } from './model/stock.model';
 
 @Injectable()
 export class ProductService {
-	constructor(@InjectRepository(Product) private productRepository: Repository<Product>) {}
+	constructor(
+		@InjectRepository(Product)
+		private productRepository: Repository<Product>,
+	) {}
 
 	private MAX_STOCK: number = 1000;
 	private MIN_STOCK: number = 0;
@@ -17,7 +20,9 @@ export class ProductService {
 		const productExists = await this.getProductById(product.id);
 
 		if (productExists) {
-			throw new ConflictException(`Producto con el id ${product.id} ya existe.`);
+			throw new ConflictException(
+				`Producto con el id ${product.id} ya existe.`,
+			);
 		}
 
 		return this.productRepository.save(product);
@@ -45,9 +50,14 @@ export class ProductService {
 			throw new ConflictException(`Producto con el id ${id} no existe.`);
 		}
 		if (product.deleted) {
-			throw new ConflictException(`Producto con el id ${id} ya fue eliminado.`);
+			throw new ConflictException(
+				`Producto con el id ${id} ya fue eliminado.`,
+			);
 		}
-		const rows: UpdateResult = await this.productRepository.update({ id }, { deleted: true });
+		const rows: UpdateResult = await this.productRepository.update(
+			{ id },
+			{ deleted: true },
+		);
 		return rows.affected == 1;
 	}
 
@@ -57,34 +67,50 @@ export class ProductService {
 			throw new ConflictException(`Producto con el id ${id} no existe.`);
 		}
 		if (!product.deleted) {
-			throw new ConflictException(`Producto con el id ${id} no está eliminado.`);
+			throw new ConflictException(
+				`Producto con el id ${id} no está eliminado.`,
+			);
 		}
-		const rows: UpdateResult = await this.productRepository.update({ id }, { deleted: false });
+		const rows: UpdateResult = await this.productRepository.update(
+			{ id },
+			{ deleted: false },
+		);
 		return rows.affected == 1;
 	}
 
 	async updateStock(stock: StockModel) {
 		const product = await this.getProductById(stock.id);
 		if (!product) {
-			throw new ConflictException(`Producto con el id ${stock.id} no existe.`);
+			throw new ConflictException(
+				`Producto con el id ${stock.id} no existe.`,
+			);
 		}
 
 		if (product.deleted) {
-			throw new ConflictException(`Producto con el id ${stock.id} está eliminado.`);
+			throw new ConflictException(
+				`Producto con el id ${stock.id} está eliminado.`,
+			);
 		}
 
-		const rows: UpdateResult = await this.productRepository.update({ id: stock.id }, { stock: stock.stock });
+		const rows: UpdateResult = await this.productRepository.update(
+			{ id: stock.id },
+			{ stock: stock.stock },
+		);
 		return rows.affected == 1;
 	}
 
 	async incrementStock(stock: StockModel) {
 		const product = await this.getProductById(stock.id);
 		if (!product) {
-			throw new ConflictException(`Producto con el id ${stock.id} no existe.`);
+			throw new ConflictException(
+				`Producto con el id ${stock.id} no existe.`,
+			);
 		}
 
 		if (product.deleted) {
-			throw new ConflictException(`Producto con el id ${stock.id} está eliminado.`);
+			throw new ConflictException(
+				`Producto con el id ${stock.id} está eliminado.`,
+			);
 		}
 
 		let productStock = 0;
@@ -95,18 +121,25 @@ export class ProductService {
 			productStock = product.stock + stock.stock;
 		}
 
-		const rows: UpdateResult = await this.productRepository.update({ id: stock.id }, { stock: productStock });
+		const rows: UpdateResult = await this.productRepository.update(
+			{ id: stock.id },
+			{ stock: productStock },
+		);
 		return rows.affected == 1;
 	}
 
 	async decrementStock(stock: StockModel) {
 		const product = await this.getProductById(stock.id);
 		if (!product) {
-			throw new ConflictException(`Producto con el id ${stock.id} no existe.`);
+			throw new ConflictException(
+				`Producto con el id ${stock.id} no existe.`,
+			);
 		}
 
 		if (product.deleted) {
-			throw new ConflictException(`Producto con el id ${stock.id} está eliminado.`);
+			throw new ConflictException(
+				`Producto con el id ${stock.id} está eliminado.`,
+			);
 		}
 
 		let productStock = 0;
@@ -117,7 +150,10 @@ export class ProductService {
 			productStock = product.stock - stock.stock;
 		}
 
-		const rows: UpdateResult = await this.productRepository.update({ id: stock.id }, { stock: productStock });
+		const rows: UpdateResult = await this.productRepository.update(
+			{ id: stock.id },
+			{ stock: productStock },
+		);
 		return rows.affected == 1;
 	}
 }

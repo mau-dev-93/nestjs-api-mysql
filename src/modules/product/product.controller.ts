@@ -1,5 +1,20 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Put } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+	Body,
+	Controller,
+	Delete,
+	Get,
+	Param,
+	Patch,
+	Post,
+	Put,
+} from '@nestjs/common';
+import {
+	ApiBody,
+	ApiOperation,
+	ApiParam,
+	ApiResponse,
+	ApiTags,
+} from '@nestjs/swagger';
 import { ProductService } from './product.service';
 import { ProductModel } from './model/product.model';
 import { StockModel } from './model/stock.model';
@@ -90,7 +105,10 @@ export class ProductController {
 		status: 409,
 		description: 'Conflicto al actualizar el producto',
 	})
-	async updateProduct(@Param('id') id: number, @Body() product: ProductModel) {
+	async updateProduct(
+		@Param('id') id: number,
+		@Body() product: ProductModel,
+	) {
 		product.id = id;
 		return await this.productService.updateProduct(product);
 	}
@@ -109,7 +127,8 @@ export class ProductController {
 	})
 	@ApiResponse({
 		status: 409,
-		description: 'Conflicto al eliminar el producto: No existe o ya fue eliminado',
+		description:
+			'Conflicto al eliminar el producto: No existe o ya fue eliminado',
 	})
 	async deleteProduct(@Param('id') id: number) {
 		return await this.productService.deleteProduct(id);
@@ -135,7 +154,8 @@ export class ProductController {
 	})
 	@ApiResponse({
 		status: 409,
-		description: 'Conflicto al actualizar stock del producto: El producto no existe o fue eliminado',
+		description:
+			'Conflicto al actualizar stock del producto: El producto no existe o fue eliminado',
 	})
 	async updateStock(@Body() stock: StockModel) {
 		return await this.productService.updateStock(stock);
@@ -161,7 +181,8 @@ export class ProductController {
 	})
 	@ApiResponse({
 		status: 409,
-		description: 'Conflicto al incrementar stock: El producto no existe o fue eliminado',
+		description:
+			'Conflicto al incrementar stock: El producto no existe o fue eliminado',
 	})
 	async incrementStock(@Body() stock: StockModel) {
 		return await this.productService.incrementStock(stock);
@@ -187,7 +208,8 @@ export class ProductController {
 	})
 	@ApiResponse({
 		status: 409,
-		description: 'Conflicto al decrementar stock: El producto no existe o fue eliminado',
+		description:
+			'Conflicto al decrementar stock: El producto no existe o fue eliminado',
 	})
 	async decrementStock(@Body() stock: StockModel) {
 		return await this.productService.decrementStock(stock);
@@ -207,7 +229,8 @@ export class ProductController {
 	})
 	@ApiResponse({
 		status: 409,
-		description: 'Conflicto al restaurar producto: El producto no existe o fue eliminado',
+		description:
+			'Conflicto al restaurar producto: El producto no existe o fue eliminado',
 	})
 	async restoreProduct(@Param('id') id: number) {
 		return await this.productService.restoreProduct(id);

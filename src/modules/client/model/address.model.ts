@@ -1,24 +1,30 @@
-import { IsNotEmpty, IsNumber, IsOptional, IsPositive, IsString } from 'class-validator';
+import {
+	IsNotEmpty,
+	IsNumber,
+	IsOptional,
+	IsPositive,
+	IsString,
+} from 'class-validator';
 
 export class AddressModel {
-    @IsOptional()
-    @IsPositive()
-    @IsNumber()
-    id: number;
+	@IsOptional()
+	@IsPositive()
+	@IsNumber()
+	id: number;
 
-    @IsNotEmpty()
-    @IsString()
-    country!: string;
+	@IsNotEmpty()
+	@IsString()
+	country!: string;
 
-    @IsNotEmpty()
-    @IsString()
-    province!: string;
+	@IsNotEmpty()
+	@IsString()
+	province!: string;
 
-    @IsNotEmpty()
-    @IsString()
-    town!: string;
+	@IsNotEmpty()
+	@IsString()
+	town!: string;
 
-    @IsNotEmpty()
-    @IsString()
-    street!: string;
+	@IsNotEmpty()
+	@IsString()
+	street!: string;
 }
