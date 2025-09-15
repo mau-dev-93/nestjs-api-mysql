@@ -9,7 +9,8 @@ import { Address } from './entity/address.entity';
 export class ClientService {
 	constructor(
 		@InjectRepository(Client) private clientsRepository: Repository<Client>,
-		@InjectRepository(Address) private addressesRepository: Repository<Address>,
+		@InjectRepository(Address)
+		private addressesRepository: Repository<Address>,
 	) {}
 
 	async findClient(client: ClientModel) {
@@ -25,9 +26,13 @@ export class ClientService {
 		const clientExists = await this.findClient(client);
 		if (clientExists) {
 			if (client.id) {
-				throw new ConflictException(`El cliente con id ${client.id} ya existe`);
+				throw new ConflictException(
+					`El cliente con id ${client.id} ya existe`,
+				);
 			} else if (client.email) {
-				throw new ConflictException(`El cliente con email ${client.email} ya existe`);
+				throw new ConflictException(
+					`El cliente con email ${client.email} ya existe`,
+				);
 			}
 		}
 
@@ -77,9 +82,13 @@ export class ClientService {
 			return await this.createClient(client);
 		}
 
-		let clientExists: Client | null = await this.getClientByEmail(client.email);
+		let clientExists: Client | null = await this.getClientByEmail(
+			client.email,
+		);
 		if (clientExists && clientExists.id !== client.id) {
-			throw new ConflictException(`El cliente con email ${client.email} ya existe`);
+			throw new ConflictException(
+				`El cliente con email ${client.email} ya existe`,
+			);
 		}
 
 		let addressExists: Address | null = null;
@@ -94,9 +103,15 @@ export class ClientService {
 				},
 			});
 
-			if (addressExists && addressExists.id !== clientExists?.address.id) {
+			if (
+				addressExists &&
+				addressExists.id !== clientExists?.address.id
+			) {
 				throw new ConflictException(`La dirección ya existe`);
-			} else if (JSON.stringify(addressExists) !== JSON.stringify(client?.address)) {
+			} else if (
+				JSON.stringify(addressExists) !==
+				JSON.stringify(client?.address)
+			) {
 				addressExists = await this.addressesRepository.findOne({
 					where: {
 						country: client.address.country,
@@ -132,7 +147,9 @@ export class ClientService {
 		const updatedClient = await this.clientsRepository.save(client);
 
 		if (deleteAddress) {
-			await this.addressesRepository.delete({ id: clientExists?.address.id });
+			await this.addressesRepository.delete({
+				id: clientExists?.address.id,
+			});
 		}
 
 		return updatedClient;
@@ -147,7 +164,9 @@ export class ClientService {
 		const rows = await this.clientsRepository.delete({ id: id });
 
 		if (rows.affected === 1) {
-			await this.addressesRepository.delete({ id: clientExists.address.id });
+			await this.addressesRepository.delete({
+				id: clientExists.address.id,
+			});
 			return true;
 		}
 
