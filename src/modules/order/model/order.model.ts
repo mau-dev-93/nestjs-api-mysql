@@ -1,5 +1,12 @@
 import { Type } from 'class-transformer';
-import { ArrayNotEmpty, IsArray, IsDate, IsNotEmpty, IsOptional, IsUUID } from 'class-validator';
+import {
+	ArrayNotEmpty,
+	IsArray,
+	IsDate,
+	IsNotEmpty,
+	IsOptional,
+	IsUUID,
+} from 'class-validator';
 import { ClientModel } from 'src/modules/client/model/client.model';
 import { ProductModel } from 'src/modules/product/model/product.model';
 
