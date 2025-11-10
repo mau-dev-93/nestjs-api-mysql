@@ -1,13 +1,28 @@
-import { Body, Controller, Get, Param, Patch, Post, Query } from '@nestjs/common';
+import {
+	Body,
+	Controller,
+	Get,
+	Param,
+	Patch,
+	Post,
+	Query,
+} from '@nestjs/common';
 import { OrderService } from './order.service';
 import { OrderModel } from './model/order.model';
 import { ParseDatePipe } from 'src/pipes/parse-date/parse-date.pipe';
-import { ApiBody, ApiOperation, ApiParam, ApiQuery, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+	ApiBody,
+	ApiOperation,
+	ApiParam,
+	ApiQuery,
+	ApiResponse,
+	ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('api/v1/orders')
 @ApiTags('Orders')
 export class OrderController {
-	constructor(private readonly orderService: OrderService) { }
+	constructor(private readonly orderService: OrderService) {}
 
 	@Post()
 	@ApiOperation({ description: 'Crea una orden' })
@@ -55,7 +70,8 @@ export class OrderController {
 	})
 	@ApiResponse({
 		status: 409,
-		description: 'El cliente no existe. <br/> El producto no existe. <br/> El producto está inactivo.',
+		description:
+			'El cliente no existe. <br/> El producto no existe. <br/> El producto está inactivo.',
 	})
 	async createOrder(@Body() order: OrderModel) {
 		return await this.orderService.createOrder(order);
@@ -72,18 +88,25 @@ export class OrderController {
 	}
 
 	@Get('/confirmed')
-	@ApiOperation({ description: 'Obtiene todas las órdenes confirmadas, filtro por fecha de inicio y fin' })
+	@ApiOperation({
+		description:
+			'Obtiene todas las órdenes confirmadas, filtro por fecha de inicio y fin',
+	})
 	@ApiQuery({
 		name: 'start',
 		type: Date,
 		required: false,
-		description: 'Fecha de inicio para filtrar las órdenes confirmadas (formato: YYYY-MM-DD)',
+		description:
+			'Fecha de inicio para filtrar las órdenes confirmadas (formato: YYYY-MM-DD)',
 	})
 	@ApiResponse({
 		status: 200,
 		description: 'Órdenes confirmadas obtenidas exitosamente',
 	})
-	async getConfirmedOrders(@Query('start', ParseDatePipe) start: Date, @Query('end', ParseDatePipe) end: Date) {
+	async getConfirmedOrders(
+		@Query('start', ParseDatePipe) start: Date,
+		@Query('end', ParseDatePipe) end: Date,
+	) {
 		return await this.orderService.getConfirmedOrders(start, end);
 	}
 
@@ -100,7 +123,9 @@ export class OrderController {
 	}
 
 	@Get('/client/:clientId')
-	@ApiOperation({ description: 'Devuelve las órdenes de un cliente por su ID' })
+	@ApiOperation({
+		description: 'Devuelve las órdenes de un cliente por su ID',
+	})
 	@ApiParam({
 		name: 'clientId',
 		type: String,

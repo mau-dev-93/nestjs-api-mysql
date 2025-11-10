@@ -9,7 +9,13 @@ import {
 } from '@nestjs/common';
 import { ClientService } from './client.service';
 import { ClientModel } from './model/client.model';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import {
+	ApiBody,
+	ApiOperation,
+	ApiParam,
+	ApiResponse,
+	ApiTags,
+} from '@nestjs/swagger';
 
 @Controller('api/v1/clients')
 @ApiTags('clientes')
@@ -17,7 +23,7 @@ export class ClientController {
 	constructor(private readonly clientService: ClientService) {}
 
 	@Post()
-	@ApiOperation({ 
+	@ApiOperation({
 		description: 'Crear un nuevo cliente',
 	})
 	@ApiBody({
@@ -32,7 +38,7 @@ export class ClientController {
 						country: 'Argentina',
 						province: 'Buenos Aires',
 						town: 'Ciudad Real 321',
-						street: "calle Falsa 123",
+						street: 'calle Falsa 123',
 					},
 				},
 			},
@@ -44,7 +50,7 @@ export class ClientController {
 						country: 'México',
 						province: 'Nuevo León',
 						town: 'Monterrey',
-						street: "Matamoros 128",
+						street: 'Matamoros 128',
 					},
 				},
 			},
@@ -64,7 +70,8 @@ export class ClientController {
 
 	@Get()
 	@ApiOperation({
-		description: 'Devuelve una lista de todos los clientes y sus direcciones',
+		description:
+			'Devuelve una lista de todos los clientes y sus direcciones',
 	})
 	@ApiResponse({
 		status: 200,
@@ -116,7 +123,7 @@ export class ClientController {
 						country: 'Argentina',
 						province: 'Buenos Aires',
 						town: 'Ciudad Real 321',
-						street: "calle Falsa 123",
+						street: 'calle Falsa 123',
 					},
 				},
 			},
@@ -130,7 +137,7 @@ export class ClientController {
 						country: 'Argentina',
 						province: 'Buenos Aires',
 						town: 'Ciudad Real 321',
-						street: "calle Falsa 123",
+						street: 'calle Falsa 123',
 					},
 				},
 			},

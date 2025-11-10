@@ -1,6 +1,12 @@
 import { ConflictException, Injectable } from '@nestjs/common';
 import { Order } from './entity/order.entity';
-import { IsNull, LessThanOrEqual, MoreThanOrEqual, Not, Repository } from 'typeorm';
+import {
+	IsNull,
+	LessThanOrEqual,
+	MoreThanOrEqual,
+	Not,
+	Repository,
+} from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { ClientService } from '../client/client.service';
 import { ProductService } from '../product/product.service';
@@ -15,15 +21,23 @@ export class OrderService {
 	) {}
 
 	async createOrder(order: OrderModel) {
-		const clientExists = await this.clientService.getClientById(order.client.id);
+		const clientExists = await this.clientService.getClientById(
+			order.client.id,
+		);
 		if (!clientExists) {
-			throw new ConflictException(`El cliente con el id ${order.client.id} no existe`);
+			throw new ConflictException(
+				`El cliente con el id ${order.client.id} no existe`,
+			);
 		}
 
 		for (const product of order.products) {
-			const productExists = await this.productService.getProductById(product.id);
+			const productExists = await this.productService.getProductById(
+				product.id,
+			);
 			if (!productExists) {
-				throw new ConflictException(`El producto con el id ${product.id} no existe`);
+				throw new ConflictException(
+					`El producto con el id ${product.id} no existe`,
+				);
 			}
 		}
 
@@ -44,7 +58,8 @@ export class OrderService {
 
 	async getConfirmedOrders(start: Date, end: Date) {
 		if (start || end) {
-			const query = this.ordersRepository.createQueryBuilder('order')
+			const query = this.ordersRepository
+				.createQueryBuilder('order')
 				.leftJoinAndSelect('order.client', 'client')
 				.leftJoinAndSelect('order.products', 'product')
 				.orderBy('order.confirmAt');
@@ -56,10 +71,10 @@ export class OrderService {
 
 			if (end) {
 				console.log(`end: ${end.getTime()}`);
-                end.setHours(24);
-                end.setMinutes(59);
-                end.setSeconds(59);
-                end.setMilliseconds(999);
+				end.setHours(24);
+				end.setMinutes(59);
+				end.setSeconds(59);
+				end.setMilliseconds(999);
 				query.andWhere({ confirmAt: LessThanOrEqual(end) });
 			}
 
@@ -79,15 +94,21 @@ export class OrderService {
 		}
 
 		if (order.confirmAt) {
-			throw new ConflictException(`La orden con el id ${id} ya fue confirmada`);
+			throw new ConflictException(
+				`La orden con el id ${id} ya fue confirmada`,
+			);
 		}
 
-		const rows = await this.ordersRepository.update({ id }, { confirmAt: new Date() });
+		const rows = await this.ordersRepository.update(
+			{ id },
+			{ confirmAt: new Date() },
+		);
 		return rows.affected === 1;
 	}
 
 	async getClientOrders(clientId: string) {
-		return this.ordersRepository.createQueryBuilder('order')
+		return this.ordersRepository
+			.createQueryBuilder('order')
 			.leftJoinAndSelect('order.client', 'client')
 			.leftJoinAndSelect('order.products', 'product')
 			.where('client.id = :clientId', { clientId })
